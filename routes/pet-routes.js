@@ -1,6 +1,7 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const router = express.Router();
-const Pet = require('../models/Pet');  // Assuming Pet model is defined in 'models/Pet.js'
+const Pet = require('../models/Pet');
 
 // Create a new Pet (POST)
 router.post('/pet', async (req, res) => {
@@ -43,13 +44,14 @@ router.get('/pets', async (req, res) => {
     }
 });
 
-// Get Pet by ID (GET)
+// Get Pet by ID or petId (GET)
 router.get('/pet/:id', async (req, res) => {
     try {
         const petId = req.params.id;  // Get the pet ID from the URL parameters
 
-        // Find the pet by ID in the database
-        const pet = await Pet.findById(petId);
+        const pet = mongoose.Types.ObjectId.isValid(petId)
+            ? await Pet.findById(petId)
+            : await Pet.findOne({ petId: petId });
 
         if (!pet) {
             return res.status(404).json({ message: 'Pet not found' });
@@ -67,24 +69,25 @@ router.get('/pet/:id', async (req, res) => {
 router.put('/pet/:id', async (req, res) => {
     try {
         const { name, type, age } = req.body;  // Get updated data from request body
+        const petId = req.params.id;  // Get the pet ID from the URL parameters
 
         // Validate input data
         if (!name || !type || !age) {
             return res.status(400).json({ message: 'All fields (name, type, age) are required.' });
         }
 
-        // Find the pet by ID and update it
-        const updatedPet = await Pet.findByIdAndUpdate(
-            req.params.id,
+        const pet = await Pet.findOneAndUpdate(
+            mongoose.Types.ObjectId.isValid(petId) ? { _id: petId } : { petId: petId },
             { name, type, age },
-            { new: true }  // Return the updated document
+            { new: true }
         );
 
-        if (!updatedPet) {
+        if (!pet) {
             return res.status(404).json({ message: 'Pet not found' });
         }
 
-        res.status(200).json(updatedPet);
+        // Return the updated pet document
+        res.status(200).json(pet);
     } catch (err) {
         console.error('Error updating pet:', err);
         res.status(500).json({ message: 'Failed to update pet' });
@@ -94,9 +97,14 @@ router.put('/pet/:id', async (req, res) => {
 // Delete a Pet (DELETE)
 router.delete('/pet/:id', async (req, res) => {
     try {
-        const deletedPet = await Pet.findByIdAndDelete(req.params.id);  // Find and delete pet by ID
+        const petId = req.params.id;
 
-        if (!deletedPet) {
+        // Check if petId is a valid ObjectId or petId
+        const pet = await Pet.findOneAndDelete(
+            mongoose.Types.ObjectId.isValid(petId) ? { _id: petId } : { petId: petId }
+        );
+
+        if (!pet) {
             return res.status(404).json({ message: 'Pet not found' });
         }
 
