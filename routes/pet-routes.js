@@ -4,7 +4,7 @@ const router = express.Router();
 const Pet = require('../models/Pet');
 
 // Create a new Pet (POST)
-router.post('/pet', async (req, res) => {
+router.post('/pet', async (req, res, next) => {
     try {
         const { name, type, age } = req.body;  // Get data from request body
 
@@ -28,24 +28,22 @@ router.post('/pet', async (req, res) => {
         const savedPet = await pet.save();
         res.status(201).json(savedPet);  // Respond with the saved pet document
     } catch (err) {
-        console.error('Error adding pet:', err);
-        res.status(500).json({ message: 'Failed to add pet' });
+        next(err); // Delegate error handling to the generic middleware
     }
 });
 
 // Get all Pets (GET)
-router.get('/pets', async (req, res) => {
+router.get('/pets', async (req, res, next) => {
     try {
         const pets = await Pet.find();  // Retrieve all pets from the database
         res.status(200).json(pets);
     } catch (err) {
-        console.error('Error fetching pets:', err);
-        res.status(500).json({ message: 'Failed to fetch pets' });
+        next(err); // Delegate error handling to the generic middleware
     }
 });
 
 // Get Pet by ID or petId (GET)
-router.get('/pet/:id', async (req, res) => {
+router.get('/pet/:id', async (req, res, next) => {
     try {
         const petId = req.params.id;  // Get the pet ID from the URL parameters
 
@@ -60,13 +58,12 @@ router.get('/pet/:id', async (req, res) => {
         // If pet is found, send the pet data as the response
         res.status(200).json(pet);
     } catch (err) {
-        console.error('Error retrieving pet:', err);
-        res.status(500).json({ message: 'Failed to get pet' });
+        next(err); // Delegate error handling to the generic middleware
     }
 });
 
 // Update a Pet (PUT)
-router.put('/pet/:id', async (req, res) => {
+router.put('/pet/:id', async (req, res, next) => {
     try {
         const { name, type, age } = req.body;  // Get updated data from request body
         const petId = req.params.id;  // Get the pet ID from the URL parameters
@@ -89,13 +86,12 @@ router.put('/pet/:id', async (req, res) => {
         // Return the updated pet document
         res.status(200).json(pet);
     } catch (err) {
-        console.error('Error updating pet:', err);
-        res.status(500).json({ message: 'Failed to update pet' });
+        next(err); // Delegate error handling to the generic middleware
     }
 });
 
 // Delete a Pet (DELETE)
-router.delete('/pet/:id', async (req, res) => {
+router.delete('/pet/:id', async (req, res, next) => {
     try {
         const petId = req.params.id;
 
@@ -110,8 +106,7 @@ router.delete('/pet/:id', async (req, res) => {
 
         res.status(200).json({ message: 'Pet deleted successfully' });
     } catch (err) {
-        console.error('Error deleting pet:', err);
-        res.status(500).json({ message: 'Failed to delete pet' });
+        next(err); // Delegate error handling to the generic middleware
     }
 });
 
