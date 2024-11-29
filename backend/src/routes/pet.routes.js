@@ -1,53 +1,48 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const router = express.Router();
-const Pet = require('../models/Pet');
+const Pet = require('../models/pet.model.js');
 
 // Create a new Pet (POST)
-router.post('/pet', async (req, res) => {
+router.post('/pet', async (req, res, next) => {
     try {
-        const { name, type, age } = req.body;  // Get data from request body
+        const { name, type, age } = req.body;
 
-        // Validate input data
         if (!name || !type || !age) {
             return res.status(400).json({ message: 'All fields (name, type, age) are required.' });
         }
 
-        const petCount = await Pet.countDocuments();  // Get the count of documents in the collection
-        const petId = petCount + 1;  // Increment ID based on the current number of pets
+        const petCount = await Pet.countDocuments();
+        const petId = petCount + 1;
 
-        // Create a new Pet document
         const pet = new Pet({
-            id: petId,  // Use custom id instead of MongoDB _id
+            id: petId,
             name,
             type,
             age,
         });
 
-        // Save the new pet to the database
         const savedPet = await pet.save();
-        res.status(201).json(savedPet);  // Respond with the saved pet document
+        res.status(201).json(savedPet);
     } catch (err) {
-        console.error('Error adding pet:', err);
-        res.status(500).json({ message: 'Failed to add pet' });
+        next(err);
     }
 });
 
 // Get all Pets (GET)
-router.get('/pets', async (req, res) => {
+router.get('/pets', async (req, res, next) => {
     try {
-        const pets = await Pet.find();  // Retrieve all pets from the database
+        const pets = await Pet.find();
         res.status(200).json(pets);
     } catch (err) {
-        console.error('Error fetching pets:', err);
-        res.status(500).json({ message: 'Failed to fetch pets' });
+        next(err);
     }
 });
 
 // Get Pet by ID or petId (GET)
-router.get('/pet/:id', async (req, res) => {
+router.get('/pet/:id', async (req, res, next) => {
     try {
-        const petId = req.params.id;  // Get the pet ID from the URL parameters
+        const petId = req.params.id;
 
         const pet = mongoose.Types.ObjectId.isValid(petId)
             ? await Pet.findById(petId)
@@ -57,21 +52,18 @@ router.get('/pet/:id', async (req, res) => {
             return res.status(404).json({ message: 'Pet not found' });
         }
 
-        // If pet is found, send the pet data as the response
         res.status(200).json(pet);
     } catch (err) {
-        console.error('Error retrieving pet:', err);
-        res.status(500).json({ message: 'Failed to get pet' });
+        next(err);
     }
 });
 
 // Update a Pet (PUT)
-router.put('/pet/:id', async (req, res) => {
+router.put('/pet/:id', async (req, res, next) => {
     try {
-        const { name, type, age } = req.body;  // Get updated data from request body
-        const petId = req.params.id;  // Get the pet ID from the URL parameters
+        const { name, type, age } = req.body;
+        const petId = req.params.id;
 
-        // Validate input data
         if (!name || !type || !age) {
             return res.status(400).json({ message: 'All fields (name, type, age) are required.' });
         }
@@ -86,20 +78,17 @@ router.put('/pet/:id', async (req, res) => {
             return res.status(404).json({ message: 'Pet not found' });
         }
 
-        // Return the updated pet document
         res.status(200).json(pet);
     } catch (err) {
-        console.error('Error updating pet:', err);
-        res.status(500).json({ message: 'Failed to update pet' });
+        next(err);
     }
 });
 
 // Delete a Pet (DELETE)
-router.delete('/pet/:id', async (req, res) => {
+router.delete('/pet/:id', async (req, res, next) => {
     try {
         const petId = req.params.id;
 
-        // Check if petId is a valid ObjectId or petId
         const pet = await Pet.findOneAndDelete(
             mongoose.Types.ObjectId.isValid(petId) ? { _id: petId } : { petId: petId }
         );
@@ -110,8 +99,7 @@ router.delete('/pet/:id', async (req, res) => {
 
         res.status(200).json({ message: 'Pet deleted successfully' });
     } catch (err) {
-        console.error('Error deleting pet:', err);
-        res.status(500).json({ message: 'Failed to delete pet' });
+        next(err);
     }
 });
 
