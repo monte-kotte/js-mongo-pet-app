@@ -1,0 +1,187 @@
+{
+	"info": {
+		"_postman_id": "1d7bd5b5-abed-4be6-9edf-daaefd705354",
+		"name": "Pet management API",
+		"description": "This collection contains the Pet API to manage pets in MongoDB.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create a New Pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"// Check if the response is successful",
+							"pm.test(\"Create pet request is successful\", function () {",
+							"    pm.response.to.have.status(201); // Check if status code is 201",
+							"});",
+							"",
+							"// Check if the response contains the petId",
+							"pm.test(\"Response contains petId\", function () {",
+							"    var responseJson = pm.response.json();",
+							"    pm.expect(responseJson).to.have.property('petId');",
+							"    var petId = responseJson.petId;",
+							"",
+							"    // Save petId as an environment variable if it's present",
+							"    if (petId) {",
+							"        pm.environment.set('petId', petId);  // Save the petId in the environment",
+							"        console.log('petId saved to environment:', petId);",
+							"    } else {",
+							"        console.log('Failed to get petId');",
+							"    }",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "Content type is JSON"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Sid\", \"type\": \"cat\", \"age\": 4}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/pet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"pet"
+					]
+				},
+				"description": "Add a new pet to the database"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Pet by ID",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "Content type is JSON"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/pet/{{petId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"pet",
+						"{{petId}}"
+					]
+				},
+				"description": "Retrieve a pet's information by ID"
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Pets",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "Content type is JSON"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/pets",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"pets"
+					]
+				},
+				"description": "Retrieve all pets from the database"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Pet",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "Content type is JSON"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\": \"Jack\", \"type\": \"dog\", \"age\": 5}"
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api/pet/{{petId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"pet",
+						"{{petId}}"
+					]
+				},
+				"description": "Update a pet's information"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Pet",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "Content type is JSON"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/api/pet/{{petId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"pet",
+						"{{petId}}"
+					]
+				},
+				"description": "Delete a pet from the database"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "petId",
+			"value": "your-pet-id-here",
+			"type": "string"
+		}
+	]
+}
