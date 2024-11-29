@@ -2,7 +2,7 @@
   "name": "pet-app",
   "version": "1.0.0",
   "description": "Simple API for managing pets using Node.js and MongoDB",
-  "main": "index.js",
+  "main": "backend/src/server.js",
   "scripts": {
     "start": "node backend/src/server.js"
   },
