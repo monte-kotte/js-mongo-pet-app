@@ -6,7 +6,7 @@ const DEFAULT_PET = {
     age: 3,
 };
 
-async function ensureDefaultDog() {
+async function ensureDefaultPet() {
     try {
         const existingPet = await Pet.findOne({ petId: 1 });
         if (!existingPet) {
@@ -18,4 +18,4 @@ async function ensureDefaultDog() {
     }
 }
 
-module.exports = { ensureDefaultDog };
+module.exports = { ensureDefaultPet };
