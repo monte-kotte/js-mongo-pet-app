@@ -44,18 +44,13 @@ td {
     font-size: 1rem;
     border: 1px solid #ddd;
     vertical-align: middle;
-    /* Ensures vertical centering */
 }
 
-/* Flexbox style for the Pet Type column only */
 td.pet-type {
     display: flex;
     align-items: center;
-    /* Vertically centers the content */
     justify-content: flex-start;
-    /* Aligns content to the left */
     gap: 10px;
-    /* Adds space between the image and the text */
 }
 
 tr:hover {
@@ -70,12 +65,8 @@ tbody tr:nth-child(odd) {
     background-color: #ffffff;
 }
 
-/* Image styling */
 img {
     width: 40px;
-    /* Adjust width as needed */
     height: 40px;
-    /* Adjust height as needed */
     object-fit: cover;
-    /* Ensures the image keeps its aspect ratio */
 }
