@@ -1,14 +1,14 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const app = require('./app.js');
-const { ensureDefaultDog } = require('./utils/db-setup.js')
+const { ensureDefaultPet } = require('./utils/db-setup.js')
 
 const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/petApp';
 
 mongoose.connect(DB_URI)
     .then(async () => {
         console.log('Connected to MongoDB');
-        await ensureDefaultDog();
+        await ensureDefaultPet();
         const port = process.env.API_PORT || 3000;
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
