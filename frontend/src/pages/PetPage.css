@@ -1,0 +1,81 @@
+.pet-page {
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    background-color: #f4f4f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    flex-direction: column;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    margin-top: 0;
+}
+
+table {
+    width: 80%;
+    max-width: 800px;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background-color: #343a40;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    padding: 12px;
+    text-align: left;
+    font-size: 1.1rem;
+    border: 1px solid #ddd;
+    font-weight: bold;
+}
+
+td {
+    padding: 10px;
+    text-align: left;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    vertical-align: middle;
+    /* Ensures vertical centering */
+}
+
+/* Flexbox style for the Pet Type column only */
+td.pet-type {
+    display: flex;
+    align-items: center;
+    /* Vertically centers the content */
+    justify-content: flex-start;
+    /* Aligns content to the left */
+    gap: 10px;
+    /* Adds space between the image and the text */
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+/* Image styling */
+img {
+    width: 40px;
+    /* Adjust width as needed */
+    height: 40px;
+    /* Adjust height as needed */
+    object-fit: cover;
+    /* Ensures the image keeps its aspect ratio */
+}
