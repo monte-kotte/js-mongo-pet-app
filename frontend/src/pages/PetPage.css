@@ -7,7 +7,6 @@
     justify-content: flex-start;
     align-items: center;
     height: 100%;
-    /* Make sure it uses the full height of the parent container */
     margin: 0;
 }
 
@@ -74,7 +73,6 @@ img {
 
 .create-pet-form {
     margin-top: 10px;
-    /* Reduce space at the top */
     margin-bottom: 20px;
     padding: 20px;
     background: #f9f9f9;
@@ -93,9 +91,7 @@ img {
     display: flex;
     flex-direction: row;
     align-items: center;
-    /* Aligns label and input/field in one row */
     gap: 10px;
-    /* Space between label and input */
     width: 100%;
 }
 
@@ -104,7 +100,6 @@ img {
     color: #333;
     font-size: 0.9rem;
     width: 120px;
-    /* Controls the width of labels */
 }
 
 .create-pet-form input,
@@ -133,7 +128,6 @@ img {
     border-radius: 6px;
     cursor: pointer;
     align-self: flex-end;
-    /* Button is aligned to the right */
     transition: background-color 0.3s ease;
 }
 

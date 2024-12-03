@@ -6,18 +6,17 @@ import catImage from '../assets/images/cat.png';
 import rabbitImage from '../assets/images/rabbit.png';
 
 const PetPage = () => {
-    const [pet, setPet] = useState(null);
+    const [pets, setPets] = useState([]);
     const [formData, setFormData] = useState({ name: '', type: 'dog', age: '' });
     const [popupMessage, setPopupMessage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
-    const petId = 1;
-    const apiPort = import.meta.env.VITE_API_PORT || 3000; // Default to 3000 if not set
+    const apiPort = import.meta.env.VITE_API_PORT || 3000;
 
     useEffect(() => {
-        fetch(`http://localhost:${apiPort}/api/pet/${petId}`)
+        fetch(`http://localhost:${apiPort}/api/pets`)
             .then((response) => response.json())
-            .then((data) => setPet(data))
-            .catch((error) => console.error('Error fetching pet:', error));
+            .then((data) => setPets(data))
+            .catch((error) => console.error('Error fetching pets:', error));
     }, []);
 
     const getPetImage = (type) => {
@@ -57,20 +56,16 @@ const PetPage = () => {
             .then((newPet) => {
                 setPopupMessage('Pet created successfully!');
                 setShowPopup(true);
-                setTimeout(() => setShowPopup(false), 1000); // Hide popup after 3 seconds
+                setPets((prevPets) => [...prevPets, newPet]);
+                setTimeout(() => setShowPopup(false), 1000);
             })
             .catch((error) => console.error('Error creating pet:', error));
     };
-
-    if (!pet) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div className="pet-page">
             <h1>Pet Information</h1>
 
-            {/* Form to create a new pet */}
             <form className="create-pet-form" onSubmit={handleFormSubmit}>
                 {showPopup && <PopupMessage message={popupMessage} />}
                 <div className="form-group">
@@ -112,7 +107,6 @@ const PetPage = () => {
                 <button type="submit">Create Pet</button>
             </form>
 
-            {/* Table showing pet information */}
             <table>
                 <thead>
                     <tr>
@@ -123,15 +117,17 @@ const PetPage = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>{pet.petId}</td>
-                        <td>{pet.name}</td>
-                        <td className="pet-type">
-                            <img src={getPetImage(pet.type)} alt={pet.type} />
-                            {pet.type}
-                        </td>
-                        <td>{pet.age}</td>
-                    </tr>
+                    {pets.map((pet) => (
+                        <tr key={pet.petId}>
+                            <td>{pet.petId}</td>
+                            <td>{pet.name}</td>
+                            <td className="pet-type">
+                                <img src={getPetImage(pet.type)} alt={pet.type} />
+                                {pet.type}
+                            </td>
+                            <td>{pet.age}</td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
