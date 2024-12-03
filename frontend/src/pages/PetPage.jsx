@@ -11,6 +11,7 @@ const PetPage = () => {
     const [formData, setFormData] = useState({ name: '', type: 'dog', age: '' });
     const [popupMessage, setPopupMessage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const apiPort = import.meta.env.VITE_API_PORT || 3000;
 
     useEffect(() => {
@@ -56,24 +57,55 @@ const PetPage = () => {
             })
             .then((newPet) => {
                 setPopupMessage('Pet created successfully!');
-                setShowPopup(true);
                 setPets((prevPets) => [...prevPets, newPet]);
                 setFormData({ name: '', type: 'dog', age: '' });
+                setShowPopup(true);
                 setTimeout(() => setShowPopup(false), 1000);
             })
             .catch((error) => console.error('Error creating pet:', error));
+        closeModal();
+
+    };
+
+    const handleDeletePet = (petId) => {
+        fetch(`http://localhost:${apiPort}/api/pet/${petId}`, {
+            method: 'DELETE',
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete pet');
+                }
+                setPets((prevPets) => prevPets.filter((pet) => pet.petId !== petId));
+            })
+            .catch((error) => console.error('Error deleting pet:', error));
+    };
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
     };
 
     return (
         <div className="pet-page">
-            <h1>Create a new Pet</h1>
-
             {showPopup && <PopupMessage message={popupMessage} />}
-            <PetForm
-                formData={formData}
-                onInputChange={handleInputChange}
-                onSubmit={handleFormSubmit}
-            />
+            <h1>Pet Management application</h1>
+            <button onClick={openModal} className="btn create-pet-btn">Here You can create a new Pet</button>
+
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button className="btn close-btn" onClick={closeModal}>Close</button>
+                        <PetForm
+                            formData={formData}
+                            onInputChange={handleInputChange}
+                            onSubmit={handleFormSubmit}
+                        />
+                    </div>
+                </div>
+            )}
 
             <table>
                 <thead>
@@ -81,7 +113,8 @@ const PetPage = () => {
                         <th>Pet ID</th>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Age</th>
+                        <th className="pet-age">Age</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,6 +127,15 @@ const PetPage = () => {
                                 {pet.type}
                             </td>
                             <td>{pet.age}</td>
+                            <td>
+                                <button
+                                    className={`btn delete-pet-btn ${pet.petId === 1 ? 'disabled' : ''}`}
+                                    onClick={() => handleDeletePet(pet.petId)}
+                                    disabled={pet.petId === 1}
+                                >
+                                    Delete Pet
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>

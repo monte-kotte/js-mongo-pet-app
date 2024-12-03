@@ -4,6 +4,7 @@ import './CreatePetForm.css';
 const PetForm = ({ formData, onInputChange, onSubmit }) => {
     return (
         <form className="create-pet-form" onSubmit={onSubmit}>
+            <h1>Create a new Pet</h1>
             <div className="form-group">
                 <label htmlFor="name">Name:</label>
                 <input
