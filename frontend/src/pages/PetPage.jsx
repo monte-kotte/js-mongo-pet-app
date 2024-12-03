@@ -64,10 +64,22 @@ const PetPage = () => {
             .catch((error) => console.error('Error creating pet:', error));
     };
 
+    const handleDeletePet = (petId) => {
+        fetch(`http://localhost:${apiPort}/api/pet/${petId}`, {
+            method: 'DELETE',
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete pet');
+                }
+                // Remove pet from the local state
+                setPets((prevPets) => prevPets.filter((pet) => pet.petId !== petId));
+            })
+            .catch((error) => console.error('Error deleting pet:', error));
+    };
+
     return (
         <div className="pet-page">
-            <h1>Create a new Pet</h1>
-
             {showPopup && <PopupMessage message={popupMessage} />}
             <PetForm
                 formData={formData}
@@ -81,7 +93,8 @@ const PetPage = () => {
                         <th>Pet ID</th>
                         <th>Name</th>
                         <th>Type</th>
-                        <th>Age</th>
+                        <th className="pet-age">Age</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,6 +107,12 @@ const PetPage = () => {
                                 {pet.type}
                             </td>
                             <td>{pet.age}</td>
+                            <td>
+                                <button className="delete-pet-btn"
+                                    onClick={() => handleDeletePet(pet.petId)}>
+                                    Delete Pet
+                                </button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
