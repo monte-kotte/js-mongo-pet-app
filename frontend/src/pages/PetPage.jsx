@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './PetPage.css';
 import PopupMessage from '../components/PopupMessage.jsx';
+import PetForm from '../components/CreatePetForm.jsx';
 import dogImage from '../assets/images/dog.png';
 import catImage from '../assets/images/cat.png';
 import rabbitImage from '../assets/images/rabbit.png';
@@ -57,6 +58,7 @@ const PetPage = () => {
                 setPopupMessage('Pet created successfully!');
                 setShowPopup(true);
                 setPets((prevPets) => [...prevPets, newPet]);
+                setFormData({ name: '', type: 'dog', age: '' });
                 setTimeout(() => setShowPopup(false), 1000);
             })
             .catch((error) => console.error('Error creating pet:', error));
@@ -64,48 +66,14 @@ const PetPage = () => {
 
     return (
         <div className="pet-page">
-            <h1>Pet Information</h1>
+            <h1>Create a new Pet</h1>
 
-            <form className="create-pet-form" onSubmit={handleFormSubmit}>
-                {showPopup && <PopupMessage message={popupMessage} />}
-                <div className="form-group">
-                    <label htmlFor="name">Name:</label>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className="form-group">
-                    <label htmlFor="type">Type:</label>
-                    <select
-                        id="type"
-                        name="type"
-                        value={formData.type}
-                        onChange={handleInputChange}
-                    >
-                        <option value="dog">Dog</option>
-                        <option value="cat">Cat</option>
-                        <option value="rabbit">Rabbit</option>
-                    </select>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="age">Age:</label>
-                    <input
-                        type="number"
-                        id="age"
-                        name="age"
-                        value={formData.age}
-                        onChange={handleInputChange}
-                        required
-                        min="0"
-                    />
-                </div>
-                <button type="submit">Create Pet</button>
-            </form>
+            {showPopup && <PopupMessage message={popupMessage} />}
+            <PetForm
+                formData={formData}
+                onInputChange={handleInputChange}
+                onSubmit={handleFormSubmit}
+            />
 
             <table>
                 <thead>
