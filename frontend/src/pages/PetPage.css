@@ -18,6 +18,16 @@ h1 {
     margin-top: 0;
 }
 
+
+button.disabled {
+    background-color: #1e1d1dc0;
+    cursor: not-allowed;
+}
+
+button.disabled:hover {
+    opacity: 0.8;
+}
+
 .btn {
     padding: 16px 16px;
     font-size: 1rem;

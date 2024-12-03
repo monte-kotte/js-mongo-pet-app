@@ -128,8 +128,11 @@ const PetPage = () => {
                             </td>
                             <td>{pet.age}</td>
                             <td>
-                                <button className="btn delete-pet-btn"
-                                    onClick={() => handleDeletePet(pet.petId)}>
+                                <button
+                                    className={`btn delete-pet-btn ${pet.petId === 1 ? 'disabled' : ''}`}
+                                    onClick={() => handleDeletePet(pet.petId)}
+                                    disabled={pet.petId === 1}
+                                >
                                     Delete Pet
                                 </button>
                             </td>
