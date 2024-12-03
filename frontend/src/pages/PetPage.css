@@ -3,11 +3,11 @@
     padding: 20px;
     background-color: #f4f4f9;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    height: 100%;
+    margin: 0;
 }
 
 h1 {
