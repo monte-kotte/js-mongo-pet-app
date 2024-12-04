@@ -1,0 +1,25 @@
+.confirm-adopt-btn {
+    background-color: #1a742f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: center;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.pet-image {
+    width: 300px;
+    height: auto;
+    align-items: center;
+    display: block;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}

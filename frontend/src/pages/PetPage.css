@@ -22,8 +22,8 @@ h2 {
     text-align: center;
     color: #333;
     font-size: 1.5 rem;
-    margin-bottom: 10px;
-    margin-top: 0;
+    margin-bottom: 0px;
+    margin-top: 10px;
 }
 
 button.disabled {
@@ -56,13 +56,13 @@ button.disabled:hover {
     outline: none;
 }
 
-.delete-pet-btn {
-    background-color: #0453a6;
+.adopt-pet-btn {
+    background-color: #1a742f;
     padding: 8px 16px;
 }
 
 .create-pet-btn {
-    background-color: #1a742f;
+    background-color: #0453a6;
 }
 
 table {

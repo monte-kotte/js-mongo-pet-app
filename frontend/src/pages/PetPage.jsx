@@ -3,7 +3,7 @@ import catImage from '../assets/images/cat.png';
 import dogImage from '../assets/images/dog.png';
 import rabbitImage from '../assets/images/rabbit.png';
 import CreatePetForm from '../components/CreatePetForm.jsx';
-import DeletePetModal from '../components/DeletePetModal.jsx';
+import AdoptPetModal from '../components/AdoptPetModal.jsx';
 import PopupMessage from '../components/PopupMessage.jsx';
 import './PetPage.css';
 
@@ -13,7 +13,7 @@ const PetPage = () => {
     const [popupMessage, setPopupMessage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [isAdoptModalOpen, setIsAdoptModalOpen] = useState(false);
     const [petToDelete, setPetToDelete] = useState(null);
     const apiPort = import.meta.env.VITE_API_PORT || 3000;
 
@@ -78,7 +78,10 @@ const PetPage = () => {
                 if (!response.ok) {
                     throw new Error('Failed to delete pet');
                 }
+                setPopupMessage('Pet adopted successfully!');
                 setPets((prevPets) => prevPets.filter((pet) => pet.petId !== petId));
+                setShowPopup(true);
+                setTimeout(() => setShowPopup(false), 1000);
             })
             .catch((error) => console.error('Error deleting pet:', error));
     };
@@ -91,22 +94,22 @@ const PetPage = () => {
         setIsCreateModalOpen(false);
     };
 
-    const openDeleteModal = (pet) => {
+    const openAdoptModal = (pet) => {
         setPetToDelete(pet);
-        setIsDeleteModalOpen(true);
+        setIsAdoptModalOpen(true);
     };
 
-    const closeDeleteModal = () => {
+    const closeAdoptModal = () => {
         setPetToDelete(null);
-        setIsDeleteModalOpen(false);
+        setIsAdoptModalOpen(false);
     };
 
     return (
         <div className="pet-page">
             {showPopup && <PopupMessage message={popupMessage} />}
-            <h1>Pet Management application</h1>
-            <button onClick={openCreateModal} className="btn create-pet-btn">Here You can create a new Pet</button>
-
+            <h1>Pet Adoption application</h1>
+            <button onClick={openCreateModal} className="btn create-pet-btn">Here You can add a new Pet</button>
+            <h2>And here, you can meet your next best friend ❤️</h2>
             <table>
                 <thead>
                     <tr>
@@ -129,11 +132,11 @@ const PetPage = () => {
                             <td>{pet.age}</td>
                             <td>
                                 <button
-                                    className={`btn delete-pet-btn ${pet.petId === 1 ? 'disabled' : ''}`}
-                                    onClick={() => openDeleteModal(pet)}
+                                    className={`btn adopt-pet-btn ${pet.petId === 1 ? 'disabled' : ''}`}
+                                    onClick={() => openAdoptModal(pet)}
                                     disabled={pet.petId === 1}
                                 >
-                                    Delete Pet
+                                    Adopt this Pet
                                 </button>
                             </td>
                         </tr>
@@ -154,14 +157,15 @@ const PetPage = () => {
                 </div>
             )}
 
-            {isDeleteModalOpen && (
-                <DeletePetModal
+            {isAdoptModalOpen && (
+                <AdoptPetModal
                     petName={petToDelete.name}
+                    petType={petToDelete.type}
                     onConfirm={() => {
                         handleDeletePet(petToDelete.petId);
-                        closeDeleteModal();
+                        closeAdoptModal();
                     }}
-                    onCancel={closeDeleteModal}
+                    onCancel={closeAdoptModal}
                 />
             )}
 
