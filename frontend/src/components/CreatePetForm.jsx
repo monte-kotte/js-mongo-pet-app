@@ -1,7 +1,7 @@
 import React from 'react';
 import './CreatePetForm.css';
 
-const PetForm = ({ formData, onInputChange, onSubmit }) => {
+const CreatePetForm = ({ formData, onInputChange, onSubmit }) => {
     return (
         <form className="create-pet-form" onSubmit={onSubmit}>
             <h1>Create a new Pet</h1>
@@ -44,9 +44,9 @@ const PetForm = ({ formData, onInputChange, onSubmit }) => {
                     placeholder="Enter pet's age (e.g., 2 or 2.5)"
                 />
             </div>
-            <button type="submit">Create Pet</button>
+            <button type="submit">Create</button>
         </form>
     );
 };
 
-export default PetForm;
+export default CreatePetForm;

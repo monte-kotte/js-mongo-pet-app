@@ -39,7 +39,7 @@
 
 .create-pet-form input,
 .create-pet-form select {
-    width: 100%;
+    width: 400px;
     padding: 10px;
     font-size: 1rem;
     border: 1px solid #ccc;

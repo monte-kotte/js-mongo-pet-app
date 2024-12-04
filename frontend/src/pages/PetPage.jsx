@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import './PetPage.css';
-import PopupMessage from '../components/PopupMessage.jsx';
-import PetForm from '../components/CreatePetForm.jsx';
-import dogImage from '../assets/images/dog.png';
 import catImage from '../assets/images/cat.png';
+import dogImage from '../assets/images/dog.png';
 import rabbitImage from '../assets/images/rabbit.png';
+import CreatePetForm from '../components/CreatePetForm.jsx';
+import DeletePetModal from '../components/DeletePetModal.jsx';
+import PopupMessage from '../components/PopupMessage.jsx';
+import './PetPage.css';
 
 const PetPage = () => {
     const [pets, setPets] = useState([]);
     const [formData, setFormData] = useState({ name: '', type: 'dog', age: '' });
     const [popupMessage, setPopupMessage] = useState('');
     const [showPopup, setShowPopup] = useState(false);
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+    const [petToDelete, setPetToDelete] = useState(null);
     const apiPort = import.meta.env.VITE_API_PORT || 3000;
 
     useEffect(() => {
@@ -63,7 +66,7 @@ const PetPage = () => {
                 setTimeout(() => setShowPopup(false), 1000);
             })
             .catch((error) => console.error('Error creating pet:', error));
-        closeModal();
+        closeCreateModal();
 
     };
 
@@ -80,32 +83,29 @@ const PetPage = () => {
             .catch((error) => console.error('Error deleting pet:', error));
     };
 
-    const openModal = () => {
-        setIsModalOpen(true);
+    const openCreateModal = () => {
+        setIsCreateModalOpen(true);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
+    const closeCreateModal = () => {
+        setIsCreateModalOpen(false);
+    };
+
+    const openDeleteModal = (pet) => {
+        setPetToDelete(pet);
+        setIsDeleteModalOpen(true);
+    };
+
+    const closeDeleteModal = () => {
+        setPetToDelete(null);
+        setIsDeleteModalOpen(false);
     };
 
     return (
         <div className="pet-page">
             {showPopup && <PopupMessage message={popupMessage} />}
             <h1>Pet Management application</h1>
-            <button onClick={openModal} className="btn create-pet-btn">Here You can create a new Pet</button>
-
-            {isModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button className="btn close-btn" onClick={closeModal}>Close</button>
-                        <PetForm
-                            formData={formData}
-                            onInputChange={handleInputChange}
-                            onSubmit={handleFormSubmit}
-                        />
-                    </div>
-                </div>
-            )}
+            <button onClick={openCreateModal} className="btn create-pet-btn">Here You can create a new Pet</button>
 
             <table>
                 <thead>
@@ -130,7 +130,7 @@ const PetPage = () => {
                             <td>
                                 <button
                                     className={`btn delete-pet-btn ${pet.petId === 1 ? 'disabled' : ''}`}
-                                    onClick={() => handleDeletePet(pet.petId)}
+                                    onClick={() => openDeleteModal(pet)}
                                     disabled={pet.petId === 1}
                                 >
                                     Delete Pet
@@ -140,6 +140,31 @@ const PetPage = () => {
                     ))}
                 </tbody>
             </table>
+
+            {isCreateModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button className="btn close-btn" onClick={closeCreateModal}>Close</button>
+                        <CreatePetForm
+                            formData={formData}
+                            onInputChange={handleInputChange}
+                            onSubmit={handleFormSubmit}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {isDeleteModalOpen && (
+                <DeletePetModal
+                    petName={petToDelete.name}
+                    onConfirm={() => {
+                        handleDeletePet(petToDelete.petId);
+                        closeDeleteModal();
+                    }}
+                    onCancel={closeDeleteModal}
+                />
+            )}
+
         </div>
     );
 };
