@@ -1,7 +1,7 @@
 const Pet = require('../models/pet.model.js');
 
 const DEFAULT_PET = {
-    name: 'Admin little angel',
+    name: 'Admin\'s little angel',
     type: 'rabbit',
     age: 3,
 };
