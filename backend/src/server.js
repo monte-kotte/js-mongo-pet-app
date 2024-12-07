@@ -1,7 +1,7 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
 const app = require('./app.js');
-const { ensureDefaultPet } = require('./utils/db-setup.js')
+const { ensureDefaultPet } = require('./utils/db-setup.js');
 
 const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/petApp';
 
