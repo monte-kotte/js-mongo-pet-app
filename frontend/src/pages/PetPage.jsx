@@ -5,6 +5,7 @@ import rabbitImage from '../assets/images/rabbit.png';
 import CreatePetForm from '../components/CreatePetForm.jsx';
 import AdoptPetModal from '../components/AdoptPetModal.jsx';
 import PopupMessage from '../components/PopupMessage.jsx';
+import { fetchAllPets, createPet, deletePet } from '../api/pets.api.js';
 import './PetPage.css';
 
 const PetPage = () => {
@@ -15,11 +16,9 @@ const PetPage = () => {
     const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
     const [isAdoptModalOpen, setIsAdoptModalOpen] = useState(false);
     const [petToDelete, setPetToDelete] = useState(null);
-    const apiPort = import.meta.env.VITE_API_PORT || 3000;
 
     useEffect(() => {
-        fetch(`http://localhost:${apiPort}/api/pets`)
-            .then((response) => response.json())
+        fetchAllPets()
             .then((data) => setPets(data))
             .catch((error) => console.error('Error fetching pets:', error));
     }, []);
@@ -47,37 +46,21 @@ const PetPage = () => {
 
     const handleFormSubmit = (e) => {
         e.preventDefault();
-        fetch(`http://localhost:${apiPort}/api/pet`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to create pet');
-                }
-                return response.json();
-            })
+        createPet(formData)
             .then((newPet) => {
                 setPopupMessage('Pet created successfully!');
                 setPets((prevPets) => [...prevPets, newPet]);
                 setFormData({ name: '', type: 'dog', age: '' });
                 setShowPopup(true);
                 setTimeout(() => setShowPopup(false), 1000);
+                closeCreateModal();
             })
             .catch((error) => console.error('Error creating pet:', error));
-        closeCreateModal();
-
     };
 
     const handleDeletePet = (petId) => {
-        fetch(`http://localhost:${apiPort}/api/pet/${petId}`, {
-            method: 'DELETE',
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Failed to delete pet');
-                }
+        deletePet(petId)
+            .then(() => {
                 setPopupMessage('Pet adopted successfully!');
                 setPets((prevPets) => prevPets.filter((pet) => pet.petId !== petId));
                 setShowPopup(true);
@@ -168,7 +151,6 @@ const PetPage = () => {
                     onCancel={closeAdoptModal}
                 />
             )}
-
         </div>
     );
 };
