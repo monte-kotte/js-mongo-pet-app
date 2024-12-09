@@ -1,13 +1,13 @@
 {
 	"info": {
-		"_postman_id": "1d7bd5b5-abed-4be6-9edf-daaefd705354",
+		"_postman_id": "4f612485-8977-41ff-a5d3-535b7079c284",
 		"name": "Pet management API",
 		"description": "This collection contains the Pet API to manage pets in MongoDB.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "Create a New Pet",
+			"name": "Create Pet",
 			"event": [
 				{
 					"listen": "test",
@@ -48,16 +48,16 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"name\": \"Sid\", \"type\": \"cat\", \"age\": 4}"
+					"raw": "{\"name\": \"Sid\", \"type\": \"cat\", \"age\": 4.7}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/api/pet",
+					"raw": "{{baseUrl}}/api/pets",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"api",
-						"pet"
+						"pets"
 					]
 				},
 				"description": "Add a new pet to the database"
@@ -76,13 +76,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/api/pet/{{petId}}",
+					"raw": "{{baseUrl}}/api/pets/{{petId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"api",
-						"pet",
+						"pets",
 						"{{petId}}"
 					]
 				},
@@ -131,13 +131,13 @@
 					"raw": "{\"name\": \"Jack\", \"type\": \"dog\", \"age\": 5}"
 				},
 				"url": {
-					"raw": "{{baseUrl}}/api/pet/{{petId}}",
+					"raw": "{{baseUrl}}/api/pets/{{petId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"api",
-						"pet",
+						"pets",
 						"{{petId}}"
 					]
 				},
@@ -157,13 +157,13 @@
 					}
 				],
 				"url": {
-					"raw": "{{baseUrl}}/api/pet/{{petId}}",
+					"raw": "{{baseUrl}}/api/pets/{{petId}}",
 					"host": [
 						"{{baseUrl}}"
 					],
 					"path": [
 						"api",
-						"pet",
+						"pets",
 						"{{petId}}"
 					]
 				},
