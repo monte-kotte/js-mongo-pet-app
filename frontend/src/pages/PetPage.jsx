@@ -5,8 +5,7 @@ import dogIcon from '../assets/icons/dog.png';
 import ediIcon from '../assets/icons/pencil.png';
 import rabbitIcon from '../assets/icons/rabbit.png';
 import AdoptPetModal from '../components/AdoptPetModal.jsx';
-import CreatePetForm from '../components/CreatePetForm.jsx';
-import EditPetForm from '../components/EditPetForm.jsx';
+import PetForm from '../components/PetForm.jsx';
 import PopupMessage from '../components/PopupMessage.jsx';
 import './PetPage.css';
 
@@ -20,6 +19,8 @@ const PetPage = () => {
     const [petToDelete, setPetToDelete] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [petToEdit, setPetToEdit] = useState(null);
+
+    const emptyForm = { name: '', type: 'dog', age: '' };
 
     useEffect(() => {
         fetchAllPets()
@@ -40,7 +41,13 @@ const PetPage = () => {
         }
     };
 
-    const handleInputChange = (e) => {
+    // CREATE Pet Form
+    const openCreatePetModal = () => {
+        setIsCreateModalOpen(true);
+        setPetToEdit(null);
+    };
+
+    const handleCreatePetInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({
             ...prevData,
@@ -48,21 +55,31 @@ const PetPage = () => {
         }));
     };
 
-    const handleFormSubmit = (e) => {
+    const handleCreatePetSubmit = (e) => {
         e.preventDefault();
         createPet(formData)
             .then((newPet) => {
                 setPopupMessage('Pet created successfully!');
                 setPets((prevPets) => [...prevPets, newPet]);
-                setFormData({ name: '', type: 'dog', age: '' });
                 setShowPopup(true);
                 setTimeout(() => setShowPopup(false), 1000);
-                closeCreateModal();
+                closeCreatePetModal();
             })
             .catch((error) => console.error('Error creating pet:', error));
     };
 
-    const handleDeletePet = (petId) => {
+    const closeCreatePetModal = () => {
+        setIsCreateModalOpen(false);
+        setFormData(emptyForm);
+    };
+
+    // ADOPT PET Modal
+    const openAdoptModal = (pet) => {
+        setPetToDelete(pet);
+        setIsAdoptModalOpen(true);
+    };
+
+    const handleAdoptPet = (petId) => {
         deletePet(petId)
             .then(() => {
                 setPopupMessage('Pet adopted successfully!');
@@ -73,35 +90,19 @@ const PetPage = () => {
             .catch((error) => console.error('Error deleting pet:', error));
     };
 
-    const openCreateModal = () => {
-        setIsCreateModalOpen(true);
-    };
-
-    const closeCreateModal = () => {
-        setIsCreateModalOpen(false);
-    };
-
-    const openAdoptModal = (pet) => {
-        setPetToDelete(pet);
-        setIsAdoptModalOpen(true);
-    };
-
     const closeAdoptModal = () => {
         setPetToDelete(null);
         setIsAdoptModalOpen(false);
     };
 
-    const openEditModal = (pet) => {
+    // EDIT PET Form
+    const openEditPetModal = (pet) => {
         setPetToEdit({ ...pet });
+        setFormData({ name: pet.name, type: pet.type, age: pet.age });
         setIsEditModalOpen(true);
     };
 
-    const closeEditModal = () => {
-        setPetToEdit(null);
-        setIsEditModalOpen(false);
-    };
-
-    const handleEditInputChange = (e) => {
+    const handleEditPetInputChange = (e) => {
         const { name, value } = e.target;
         setPetToEdit((prevPet) => ({
             ...prevPet,
@@ -109,7 +110,7 @@ const PetPage = () => {
         }));
     };
 
-    const handleEditSubmit = (e) => {
+    const handleEditPetSubmit = (e) => {
         e.preventDefault();
         updatePet(petToEdit.petId, petToEdit)
             .then((updatedPet) => {
@@ -121,16 +122,24 @@ const PetPage = () => {
                 );
                 setShowPopup(true);
                 setTimeout(() => setShowPopup(false), 1000);
-                closeEditModal();
+                closeEditPetModal();
             })
             .catch((error) => console.error('Error updating pet:', error));
+    };
+
+    const closeEditPetModal = () => {
+        setIsEditModalOpen(false);
+        setPetToEdit(null);
+        setFormData(emptyForm);
     };
 
     return (
         <div className="pet-page">
             {showPopup && <PopupMessage message={popupMessage} />}
             <h1>Pet Adoption application</h1>
-            <button onClick={openCreateModal} className="btn create-pet-btn">Here You can add a new Pet</button>
+            <button onClick={openCreatePetModal} className="btn create-pet-btn">
+                Here You can add a new Pet
+            </button>
             <h2>And here, you can meet your next best friend ❤️</h2>
             <table>
                 <thead>
@@ -164,7 +173,7 @@ const PetPage = () => {
                                 </button>
                                 <button
                                     className="btn edit-pet-btn"
-                                    onClick={() => openEditModal(pet)}
+                                    onClick={() => openEditPetModal(pet)}
                                     disabled={pet.petId === 1}
                                 >
                                     <img className="edit-icon" src={ediIcon} alt="Edit" />
@@ -178,12 +187,29 @@ const PetPage = () => {
             {isCreateModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">
-                        <button className="btn close-btn" onClick={closeCreateModal}>Close</button>
-                        <CreatePetForm
+                        <button className="btn close-btn" onClick={closeCreatePetModal}>Close</button>
+                        <PetForm
                             formData={formData}
-                            onInputChange={handleInputChange}
-                            onSubmit={handleFormSubmit}
-                            onCancel={closeCreateModal}
+                            onInputChange={handleCreatePetInputChange}
+                            onSubmit={handleCreatePetSubmit}
+                            onCancel={closeCreatePetModal}
+                            isEdit={false}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {isEditModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <button className="btn close-btn" onClick={closeEditPetModal}>Close</button>
+                        <PetForm
+                            formData={petToEdit}
+                            onInputChange={handleEditPetInputChange}
+                            onSubmit={handleEditPetSubmit}
+                            onCancel={closeEditPetModal}
+                            className="edit-pet-form"
+                            isEdit={true}
                         />
                     </div>
                 </div>
@@ -194,25 +220,11 @@ const PetPage = () => {
                     petName={petToDelete.name}
                     petType={petToDelete.type}
                     onConfirm={() => {
-                        handleDeletePet(petToDelete.petId);
+                        handleAdoptPet(petToDelete.petId);
                         closeAdoptModal();
                     }}
                     onCancel={closeAdoptModal}
                 />
-            )}
-
-            {isEditModalOpen && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <button className="btn close-btn" onClick={closeEditModal}>Close</button>
-                        <EditPetForm
-                            formData={petToEdit}
-                            onInputChange={handleEditInputChange}
-                            onSubmit={handleEditSubmit}
-                            onCancel={closeEditModal}
-                        />
-                    </div>
-                </div>
             )}
         </div>
     );
