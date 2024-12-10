@@ -94,7 +94,7 @@ td {
     vertical-align: middle;
 }
 
-td.pet-type {
+div.pet-type {
     display: flex;
     align-items: center;
     justify-content: flex-start;
@@ -119,8 +119,8 @@ tbody tr:nth-child(odd) {
 }
 
 img {
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     object-fit: cover;
 }
 
@@ -167,4 +167,18 @@ img {
 
 .close-btn:hover {
     color: red;
+}
+
+.edit-pet-btn {
+    background-color: transparent;
+    padding: 10px 0px;
+    border: none;
+}
+
+.edit-pet-btn img {
+    width: 20px !important;
+    height: 20px !important;
+    padding: 0px 10px;
+    object-fit: contain;
+    vertical-align: middle;
 }

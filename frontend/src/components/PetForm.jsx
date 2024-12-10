@@ -1,10 +1,10 @@
 import React from 'react';
-import './CreatePetForm.css';
+import './PetForm.css';
 
-const CreatePetForm = ({ formData, onInputChange, onSubmit }) => {
+const PetForm = ({ formData, onInputChange, onSubmit, onCancel, className, isEdit }) => {
     return (
-        <form className="create-pet-form" onSubmit={onSubmit}>
-            <h1>Create a new Pet</h1>
+        <form className={`pet-form ${className}`} onSubmit={onSubmit}>
+            <h1>{isEdit ? 'Edit Pet Details' : 'Create a new Pet'}</h1>
             <div className="form-group">
                 <label htmlFor="name">Name:</label>
                 <input
@@ -44,9 +44,16 @@ const CreatePetForm = ({ formData, onInputChange, onSubmit }) => {
                     placeholder="Enter pet's age (e.g., 2 or 2.5)"
                 />
             </div>
-            <button type="submit">Create</button>
+            <div className="form-actions">
+                <button type="button" className="btn cancel-btn" onClick={onCancel}>
+                    Cancel
+                </button>
+                <button type="submit" className="btn">
+                    {isEdit ? 'Save Changes' : 'Create'}
+                </button>
+            </div>
         </form>
     );
 };
 
-export default CreatePetForm;
+export default PetForm;

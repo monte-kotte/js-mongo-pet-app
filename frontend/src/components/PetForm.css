@@ -1,4 +1,4 @@
-.create-pet-form {
+.pet-form {
     margin-top: 10px;
     margin-bottom: 20px;
     padding: 20px;
@@ -13,7 +13,7 @@
     align-items: flex-start;
 }
 
-.create-pet-form h1 {
+.pet-form h1 {
     width: 100%;
     text-align: center;
     font-size: 1.8rem;
@@ -22,7 +22,7 @@
     font-weight: bold;
 }
 
-.create-pet-form .form-group {
+.pet-form .form-group {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -30,15 +30,15 @@
     width: 100%;
 }
 
-.create-pet-form label {
+.pet-form label {
     font-weight: bold;
     color: #333;
     font-size: 1rem;
     width: 20%;
 }
 
-.create-pet-form input,
-.create-pet-form select {
+.pet-form input,
+.pet-form select {
     width: 400px;
     padding: 10px;
     font-size: 1rem;
@@ -48,13 +48,13 @@
     transition: border-color 0.3s ease;
 }
 
-.create-pet-form input:focus,
-.create-pet-form select:focus {
+.pet-form input:focus,
+.pet-form select:focus {
     border-color: #007bff;
     outline: none;
 }
 
-.create-pet-form button {
+.pet-form button {
     padding: 12px 20px;
     font-size: 1rem;
     background-color: #0453a6;
@@ -66,6 +66,29 @@
     transition: background-color 0.3s ease;
 }
 
-.create-pet-form button:hover {
+.pet-form .cancel-btn {
+    background-color: #6f7e8a;
+}
+
+.pet-form button:hover {
     transform: scale(1.05);
+}
+
+.edit-pet-form {
+    background: #fffbe6;
+}
+
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 10px;
+    margin-top: 20px;
+    box-sizing: border-box;
+}
+
+.form-actions .btn {
+    width: 150px;
+    padding: 12px 20px;
 }
