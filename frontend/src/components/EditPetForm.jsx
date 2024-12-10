@@ -1,10 +1,10 @@
 import React from 'react';
 import './PetForm.css';
 
-const CreatePetForm = ({ formData, onInputChange, onSubmit, onCancel }) => {
+const EditPetForm = ({ formData, onInputChange, onSubmit, onCancel }) => {
     return (
-        <form className="pet-form" onSubmit={onSubmit}>
-            <h1>Create a new Pet</h1>
+        <form className="pet-form edit-pet-form" onSubmit={onSubmit}>
+            <h1>Edit Pet Details</h1>
             <div className="form-group">
                 <label htmlFor="name">Name:</label>
                 <input
@@ -14,7 +14,6 @@ const CreatePetForm = ({ formData, onInputChange, onSubmit, onCancel }) => {
                     value={formData.name}
                     onChange={onInputChange}
                     required
-                    placeholder="Enter pet's name"
                 />
             </div>
             <div className="form-group">
@@ -24,6 +23,7 @@ const CreatePetForm = ({ formData, onInputChange, onSubmit, onCancel }) => {
                     name="type"
                     value={formData.type}
                     onChange={onInputChange}
+                    required
                 >
                     <option value="dog">Dog</option>
                     <option value="cat">Cat</option>
@@ -34,24 +34,21 @@ const CreatePetForm = ({ formData, onInputChange, onSubmit, onCancel }) => {
                 <label htmlFor="age">Age:</label>
                 <input
                     type="number"
-                    step="0.1"
                     id="age"
                     name="age"
                     value={formData.age}
                     onChange={onInputChange}
-                    min="0"
                     required
-                    placeholder="Enter pet's age (e.g., 2 or 2.5)"
                 />
             </div>
             <div className="form-actions">
                 <button type="button" className="btn cancel-btn" onClick={onCancel}>
                     Cancel
                 </button>
-                <button type="submit" className="btn">Create</button>
+                <button type="submit" className="btn save-btn">Save Changes</button>
             </div>
         </form>
     );
 };
 
-export default CreatePetForm;
+export default EditPetForm;

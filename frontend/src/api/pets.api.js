@@ -28,3 +28,15 @@ export const deletePet = async (petId) => {
         throw new Error('Failed to delete pet');
     }
 };
+
+export const updatePet = async (petId, petData) => {
+    const response = await fetch(`${API_PETS_URL}/${petId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(petData),
+    });
+    if (!response.ok) {
+        throw new Error('Failed to update pet');
+    }
+    return response.json();
+};
