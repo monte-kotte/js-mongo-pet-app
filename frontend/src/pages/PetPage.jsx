@@ -7,6 +7,7 @@ import rabbitIcon from '../assets/icons/rabbit.png';
 import AdoptPetModal from '../components/AdoptPetModal.jsx';
 import PetForm from '../components/PetForm.jsx';
 import PopupMessage from '../components/PopupMessage.jsx';
+import { API_SWAGGER_URL } from '../api/api.config';
 import './PetPage.css';
 
 const PetPage = () => {
@@ -226,6 +227,9 @@ const PetPage = () => {
                     onCancel={closeAdoptModal}
                 />
             )}
+            <footer className="swagger-link">
+                <p><a href={API_SWAGGER_URL} target="_blank" rel="noopener noreferrer">Swagger API</a></p>
+            </footer>
         </div>
     );
 };
