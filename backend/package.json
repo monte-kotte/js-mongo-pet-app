@@ -12,6 +12,8 @@
     "express": "^4.18.2",
     "mongoose": "^8.7.0",
     "mongoose-sequence": "^6.0.1",
-    "pet-app": "file:.."
+    "pet-app": "file:..",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }

@@ -1,17 +1,15 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
 const app = require('./app.js');
 const { ensureDefaultPet } = require('./utils/db-setup.js');
+const config = require('./config/config.js');
 
-const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/petApp';
-const PORT = process.env.API_PORT || 3000;
-
-mongoose.connect(DB_URI)
+mongoose.connect(config.dbUri)
     .then(async () => {
         console.log('Connected to MongoDB');
         await ensureDefaultPet();
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
+        app.listen(config.port, () => {
+            console.log(`Server is running on port ${config.port}`);
+            console.log(`Swagger http://localhost:${config.port}/swagger`);
         });
     })
     .catch((err) => {
