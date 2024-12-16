@@ -4,14 +4,14 @@ const app = require('./app.js');
 const { ensureDefaultPet } = require('./utils/db-setup.js');
 
 const DB_URI = process.env.DB_URI || 'mongodb://localhost:27017/petApp';
+const PORT = process.env.API_PORT || 3000;
 
 mongoose.connect(DB_URI)
     .then(async () => {
         console.log('Connected to MongoDB');
         await ensureDefaultPet();
-        const port = process.env.API_PORT || 3000;
-        app.listen(port, () => {
-            console.log(`Server is running on port ${port}`);
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
         });
     })
     .catch((err) => {
