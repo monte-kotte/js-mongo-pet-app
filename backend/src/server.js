@@ -9,6 +9,7 @@ mongoose.connect(config.dbUri)
         await ensureDefaultPet();
         app.listen(config.port, () => {
             console.log(`Server is running on port ${config.port}`);
+            console.log(`Swagger http://localhost:${config.port}/swagger`);
         });
     })
     .catch((err) => {
