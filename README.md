@@ -1,8 +1,37 @@
-# Pet Management App
+# Pet Adoption App
 
 ## Description
 
-This is a **Pet Management App** built using **Node.js**, **Express.js**, and **MongoDB**. It provides users with the ability to manage a collection of pets. This app supports CRUD operations (Create, Read, Update, Delete) for pets, which includes storing and managing information like `name`, `type`, and `age`.
+This is a **Pet Adoption App** built using **Node.js**, **Express.js**, **MongoDB**, and **React** with **Vite**. It provides users with the ability to manage a collection of pets.
+
+---
+
+## Features
+
+### Backend
+- **RESTful API** built with **Express.js**.
+- **MongoDB** for data persistence.
+- Full support for CRUD operations.
+- Validation of input data for pets (e.g., `name`, `type`, `age`).
+
+### Frontend
+- Built with **React** and **Vite** for a fast and modern development environment.
+- Interactive UI for managing pets.
+- Integration with the backend API for dynamic data fetching and manipulation.
+
+---
+
+## Tech Stack
+
+### Backend
+- **Node.js**
+- **Express.js**
+- **MongoDB**
+- **Mongoose** (for database schema and validation)
+
+### Frontend
+- **React**
+- **Vite**
 
 ---
 
@@ -25,8 +54,8 @@ Follow these steps to set up and run the project:
 git clone https://github.com/monte-kotte/js-mongo-pet-app
 cd js-mongo-pet-app
 
-# Install the necessary dependencies and Playwright browsers
-npm install
+# Install the necessary dependencies (for api and ui)
+npm install-all
 ```
 
 ## Set Up MongoDB Using Docker
@@ -45,12 +74,8 @@ If you prefer using Docker for MongoDB, follow these steps:
   # Download and start the MongoDB container in detached mode.
   docker-compose up -d
 
-  # Check Running Containers. 
-  # You should see your MongoDB container (`pet-app-mongo`) in the output.
-  docker ps
-
-  # Stop the MongoDB container and clean up the resources.
-  docker-compose down
+# Stop the MongoDB containers and clean up resources. -v flag will remove volumes associated with the containers.
+  docker-compose down -v
 ```
 
 ## Set Up MongoDB Locally Using `.env`
@@ -72,21 +97,11 @@ Alternatively, you can configure MongoDB locally without Docker by using environ
    - Also you can select custom API port number for starting the app using `.env` file:
    ```env
    API_PORT=your_api_port
+   VITE_API_PORT=your_api_port
    ```
 
-## Run the Application
+## Run the Application (server and client)
 
 ```bash
   npm start
 ```
-
-## Postman Collectioт
-
-The project includes a Postman collection and Postman environment for convenient API testing, located in the `postman/` directory.
-
-### 📂 Files Included:
-- **`API-pet-collection.postman_collection.json`**: Contains all the API endpoints for interacting with the backend.
-- **`API-pet-env.postman_environment.json`**: Defines environment variables (e.g., base URL, API keys) for testing.
-
-### Important Configuration for Postman:
-- In case of using environment variables for running the app, don't forget to update the **baseUrl** in your Postman environment to match the API port defined in your `.env` file.
