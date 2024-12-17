@@ -5,10 +5,11 @@
   "main": "backend/src/server.js",
   "private": true,
   "scripts": {
+    "install-all": "npm install && npm install --prefix frontend && npm install --prefix backend",
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node backend/src/server.js",
     "client": "npm run dev --prefix frontend",
-    "install-all": "npm install && npm install --prefix frontend && npm install --prefix backend"
+    "api-tests": "jest backend/tests"
   },
   "workspaces": [
     "frontend",
