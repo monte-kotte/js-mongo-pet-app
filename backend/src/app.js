@@ -1,12 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const swaggerUi = require('swagger-ui-express');
-const swaggerDocs = require('./swagger');
 const routes = require('./routes');
+const YAML = require('yamljs');
 
 const app = express();
 
-app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+const swaggerDocument = YAML.load('./backend/src/swagger/openapi.yaml');
+app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 app.use(express.json());
 app.use(cors());

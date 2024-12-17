@@ -1,0 +1,174 @@
+openapi: 3.0.0
+info:
+  title: Pet Adoption API
+  description: RESTful API for managing pets in the Pet Adoption App.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api
+    description: Local development server
+
+paths:
+  /pets:
+    post:
+      tags:
+        - Pets
+      summary: Create a new pet
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetRequest'
+      responses:
+        '201':
+          description: Pet created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetResponse'
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+
+    get:
+      tags:
+        - Pets
+      summary: Get all pets
+      responses:
+        '200':
+          description: A list of pets
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PetResponse'
+        '500':
+          description: Internal server error
+
+  /pets/{id}:
+    get:
+      tags:
+        - Pets
+      summary: Get a pet by ID
+      parameters:
+        - $ref: '#/components/parameters/PetId'
+      responses:
+        '200':
+          description: Pet details successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetResponse'
+        '404':
+          description: Pet not found
+        '500':
+          description: Internal server error
+
+    put:
+      tags:
+        - Pets
+      summary: Update a pet by ID
+      parameters:
+        - $ref: '#/components/parameters/PetId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetRequest'
+      responses:
+        '200':
+          description: Pet successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetResponse'
+        '400':
+          description: Bad request
+        '404':
+          description: Pet not found
+        '500':
+          description: Internal server error
+
+    delete:
+      tags:
+        - Pets
+      summary: Delete a pet by ID
+      parameters:
+        - $ref: '#/components/parameters/PetId'
+      responses:
+        '200':
+          description: Pet successfully deleted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Pet deleted successfully
+        '404':
+          description: Pet not found
+        '500':
+          description: Internal server error
+
+components:
+  schemas:
+    PetRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the pet
+        type:
+          type: string
+          enum: [cat, dog, rabbit]
+          description: Type of the pet
+        age:
+          type: number
+          description: Age of the pet
+      required: [name, type, age]
+
+    PetResponse:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: MongoDB unique identifier
+        petId:
+          type: integer
+          description: Unique identifier for the pet
+        name:
+          type: string
+          description: Name of the pet
+        type:
+          type: string
+          enum: [cat, dog, rabbit]
+          description: Type of the pet
+        age:
+          type: number
+          description: Age of the pet
+        createdAt:
+          type: string
+          format: date-time
+          description: Creation timestamp
+        updatedAt:
+          type: string
+          format: date-time
+          description: Last updated timestamp
+        __v:
+          type: integer
+          description: Version key
+      required: [name, type, age]
+
+  parameters:
+    PetId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+      description: The ID of the pet (either MongoDB `_id` or `petId`).

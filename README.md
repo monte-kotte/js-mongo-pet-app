@@ -55,7 +55,7 @@ git clone https://github.com/monte-kotte/js-mongo-pet-app
 cd js-mongo-pet-app
 
 # Install the necessary dependencies (for api and ui)
-npm install-all
+npm run install-all
 ```
 
 ## Set Up MongoDB Using Docker
@@ -74,7 +74,7 @@ If you prefer using Docker for MongoDB, follow these steps:
   # Download and start the MongoDB container in detached mode.
   docker-compose up -d
 
-# Stop the MongoDB containers and clean up resources. -v flag will remove volumes associated with the containers.
+  # Stop the MongoDB containers and clean up resources. -v flag will remove volumes associated with the containers.
   docker-compose down -v
 ```
 
@@ -94,9 +94,14 @@ Alternatively, you can configure MongoDB locally without Docker by using environ
    ```env
    DB_URI=your_mongo_connection_string
    ```
-   - Also you can select custom API port number for starting the app using `.env` file:
-   ```env
+
+ #### NOTE: You can also select a custom API port number for starting the app using `.env` variables (you should change both for proper application functioning):
+
+   ```bash
+   # In the root folder (for the backend):
    API_PORT=your_api_port
+
+   # In the frontend folder (for Vite):
    VITE_API_PORT=your_api_port
    ```
 
