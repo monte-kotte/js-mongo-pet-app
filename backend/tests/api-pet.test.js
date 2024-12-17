@@ -1,6 +1,7 @@
 const supertest = require("supertest");
-const app = require("../src/app");
+const app = require("../src/app.js");
 const { startMongoContainer, stopMongoContainer } = require("./test-setup.js");
+const { generateTestPet } = require("./utils/pet-gen.js");
 
 beforeAll(async () => {
     await startMongoContainer();
@@ -12,16 +13,14 @@ afterAll(async () => {
 
 describe("API: Pets - Positive cases", () => {
     test("POST /api/pets - Create Pet", async () => {
-        const testPet = {
-            name: "Sid",
-            type: "cat",
-            age: 4.7,
-        };
+        const testPet = generateTestPet();
+
         // Step 1: Create Pet via POST request
         const response = await supertest(app)
             .post("/api/pets")
             .send(testPet)
             .expect(201);
+
         // Step 2: Validate response
         expect(response.body).toHaveProperty("petId");
         expect(response.body.name).toBe(testPet.name);
@@ -30,11 +29,8 @@ describe("API: Pets - Positive cases", () => {
     });
 
     test("GET /api/pets/:id - Get Pet by ID", async () => {
-        const testPet = {
-            name: "Jack",
-            type: "rabbit",
-            age: 1.1,
-        };
+        const testPet = generateTestPet();
+
         // Step 1: Create Pet via POST request
         const postResponse = await supertest(app)
             .post("/api/pets")
@@ -63,11 +59,9 @@ describe("API: Pets - Positive cases", () => {
     });
 
     test("PUT /api/pets/:id - Update Pet", async () => {
-        const testPet = {
-            name: "Anna",
-            type: "cat",
-            age: 2,
-        };
+        const testPet = generateTestPet();
+        const updatedPet = generateTestPet();
+
         // Step 1: Create Pet via POST request
         const postResponse = await supertest(app)
             .post("/api/pets")
@@ -76,12 +70,6 @@ describe("API: Pets - Positive cases", () => {
         const petId = postResponse.body.petId;
 
         // Step 2: Update Pet via PUT request
-        const updatedPet = {
-            name: "Anna-M",
-            type: "dog",
-            age: 2.5,
-        };
-
         const response = await supertest(app)
             .put(`/api/pets/${petId}`)
             .send(updatedPet)
@@ -95,11 +83,8 @@ describe("API: Pets - Positive cases", () => {
     });
 
     test("DELETE /api/pets/:id - Delete Pet", async () => {
-        const testPet = {
-            name: "Mari",
-            type: "rabbit",
-            age: 3,
-        };
+        const testPet = generateTestPet();
+
         // Step 1: Create Pet via POST request
         const postResponse = await supertest(app)
             .post("/api/pets")
@@ -113,7 +98,7 @@ describe("API: Pets - Positive cases", () => {
             .expect(200);
 
         // Step 3: Check that pet was deleted
-        expect(response.body).toHaveProperty("message", "Pet deleted successfully");
+        expect(response.body.message).toBe("Pet deleted successfully");
         await supertest(app)
             .get(`/api/pets/${petId}`)
             .expect(404);
