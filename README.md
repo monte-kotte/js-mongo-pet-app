@@ -107,6 +107,20 @@ Alternatively, you can configure MongoDB locally without Docker by using environ
 
 ## Run the Application (server and client)
 
+To run both the server and client at the same time, use the following command:
+
 ```bash
   npm start
+```
+### Breakdown of Commands:
+
+- **`npm run server`**: Starts the backend server.
+- **`npm run client`**: Starts the frontend client.
+- **`npm start`**: Runs both the server and the client in parallel using `concurrently`.
+
+## Run Tests
+
+```bash
+#API Tests (Testcontainers used, no need to run DB or app separately)
+npm run api-tests
 ```
