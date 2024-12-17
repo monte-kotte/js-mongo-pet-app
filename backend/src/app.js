@@ -20,6 +20,18 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
+
+    if (err.name === 'ValidationError') {
+        const errors = Object.keys(err.errors).map((key) => ({
+            field: key,
+            message: err.errors[key].message,
+        }));
+        return res.status(400).json({
+            message: 'Validation failed',
+            errors,
+        });
+    }
+
     res.status(500).json({ message: 'Something went wrong' });
 });
 

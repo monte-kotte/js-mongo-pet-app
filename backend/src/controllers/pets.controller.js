@@ -69,7 +69,7 @@ exports.updatePet = async (req, res, next) => {
         const pet = await Pet.findOneAndUpdate(
             mongoose.Types.ObjectId.isValid(petId) ? { _id: petId } : { petId: petId },
             { name, type, age },
-            { new: true }
+            { new: true, runValidators: true }
         );
 
         if (!pet) {
