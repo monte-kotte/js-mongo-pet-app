@@ -55,7 +55,7 @@ git clone https://github.com/monte-kotte/js-mongo-pet-app
 cd js-mongo-pet-app
 
 # Install the necessary dependencies (for api and ui)
-npm install-all
+npm run install-all
 ```
 
 ## Set Up MongoDB Using Docker

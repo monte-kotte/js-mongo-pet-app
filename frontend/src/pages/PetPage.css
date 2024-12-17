@@ -6,7 +6,7 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
 }
 
@@ -181,4 +181,9 @@ img {
     padding: 0px 10px;
     object-fit: contain;
     vertical-align: middle;
+}
+
+.swagger-link a {
+    text-align: center;
+    color: #0453a6;
 }
