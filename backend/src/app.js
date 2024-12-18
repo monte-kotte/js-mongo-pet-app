@@ -19,7 +19,9 @@ app.use((req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-    console.error(err.stack);
+    if (err.statusCode) {
+        return res.status(err.statusCode).json({ message: err.message });
+    }
     res.status(500).json({ message: 'Something went wrong' });
 });
 
