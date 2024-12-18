@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const Pet = require('../models/pet.model.js');
+const { PetNotFoundError } = require('../errors/custom-errors.js');
+const validatePetFields = require('./pets.validator.js');
 
 // Create a new Pet
 exports.createPet = async (req, res, next) => {
     try {
         const { name, type, age } = req.body;
 
-        if (!name || !type || !age) {
-            return res.status(400).json({ message: 'All fields (name, type, age) are required.' });
-        }
+        validatePetFields(name, type, age);
 
         const petCount = await Pet.countDocuments();
         const petId = petCount + 1;
@@ -47,7 +47,7 @@ exports.getPetById = async (req, res, next) => {
             : await Pet.findOne({ petId: petId });
 
         if (!pet) {
-            return res.status(404).json({ message: 'Pet not found' });
+            throw new PetNotFoundError();
         }
 
         res.status(200).json(pet);
@@ -62,9 +62,7 @@ exports.updatePet = async (req, res, next) => {
         const { name, type, age } = req.body;
         const petId = req.params.id;
 
-        if (!name || !type || !age) {
-            return res.status(400).json({ message: 'All fields (name, type, age) are required.' });
-        }
+        validatePetFields(name, type, age);
 
         const pet = await Pet.findOneAndUpdate(
             mongoose.Types.ObjectId.isValid(petId) ? { _id: petId } : { petId: petId },
@@ -73,7 +71,7 @@ exports.updatePet = async (req, res, next) => {
         );
 
         if (!pet) {
-            return res.status(404).json({ message: 'Pet not found' });
+            throw new PetNotFoundError();
         }
 
         res.status(200).json(pet);
@@ -92,7 +90,7 @@ exports.deletePet = async (req, res, next) => {
         );
 
         if (!pet) {
-            return res.status(404).json({ message: 'Pet not found' });
+            throw new PetNotFoundError();
         }
 
         res.status(200).json({ message: 'Pet deleted successfully' });
