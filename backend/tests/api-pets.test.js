@@ -5,11 +5,11 @@ const { generateTestPet } = require("./utils/pet-gen.js");
 
 beforeAll(async () => {
     await startMongoContainer();
-});
+}, 20000);
 
 afterAll(async () => {
     await stopMongoContainer();
-});
+}, 20000);
 
 describe("API: Pets - Positive cases", () => {
     test("POST /api/pets - Create Pet", async () => {
