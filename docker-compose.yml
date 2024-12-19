@@ -1,6 +1,6 @@
 services:
   mongodb:
-    image: mongo:latest
+    image: mongo:6.0.19
     container_name: pet-app-mongo
     ports:
       - "27017:27017"

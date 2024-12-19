@@ -5,7 +5,7 @@ let mongoContainer;
 let mongoUri;
 
 const startMongoContainer = async () => {
-    mongoContainer = await new GenericContainer("mongo")
+    mongoContainer = await new GenericContainer("mongo:6.0.19")
         .withExposedPorts(27017)
         .start();
 
