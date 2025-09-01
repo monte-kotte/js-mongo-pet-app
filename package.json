@@ -16,8 +16,11 @@
     "backend"
   ],
   "dependencies": {
-    "frontend": "file:frontend",
     "backend": "file:backend",
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "frontend": "file:frontend"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0"
   }
 }

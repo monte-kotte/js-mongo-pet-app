@@ -54,3 +54,10 @@ coverage/
 # Ignore MongoDB database files if used locally
 *.lock
 dump/
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/playwright/.auth
