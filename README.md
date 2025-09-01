@@ -121,6 +121,23 @@ To run both the server and client at the same time, use the following command:
 ## Run Tests
 
 ```bash
-#API Tests (Testcontainers used, no need to run DB or app separately)
-npm run api-tests
+# API Tests (Testcontainers used, no need to run DB or app separately)
+npm run test:unit
+```
+
+## Run E2E API Tests
+
+This project uses **Playwright** for end-to-end API testing. To run the tests, you need to have MongoDB and the backend server running.
+
+### Steps
+
+```bash
+# Start MongoDB via Docker Compose
+docker-compose up -d
+
+# Start the backend server
+npm run server
+
+# Run the E2E API tests in another terminal
+npm run test:e2e-api
 ```
