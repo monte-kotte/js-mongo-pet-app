@@ -9,7 +9,8 @@
     "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node backend/src/server.js",
     "client": "npm run dev --prefix frontend",
-    "api-tests": "jest backend/tests"
+    "test:unit": "jest backend/tests",
+    "test:e2e-api": "npx playwright test"
   },
   "workspaces": [
     "frontend",
