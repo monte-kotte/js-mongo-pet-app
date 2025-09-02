@@ -1,13 +1,15 @@
 import { test } from "@playwright/test";
 
 export class RequestHandler {
-    constructor(request, baseUrl) {
+
+    constructor(request, baseUrl, defaultHeaders, logger) {
         this.request = request;
         this.baseUrl = baseUrl.endsWith("/") ? baseUrl.slice(0, -1) : baseUrl;
+        this.logger = logger;
 
         this.apiPath = "";
         this.queryParams = {};
-        this.apiHeaders = {};
+        this.apiHeaders = defaultHeaders;
         this.apiBody = {};
     }
 
@@ -22,7 +24,7 @@ export class RequestHandler {
     }
 
     headers(headers) {
-        this.apiHeaders = headers;
+        this.apiHeaders = { ...this.apiHeaders, ...headers };;
         return this;
     }
 
@@ -52,17 +54,29 @@ export class RequestHandler {
         let responseJSON;
 
         await test.step(`${method} request to: ${url}`, async () => {
+            this.logger.logRequest(
+                method,
+                url,
+                this.apiHeaders,
+                ["POST", "PUT"].includes(method) ? this.apiBody : undefined
+            );
+
             const options = {
                 headers: this.apiHeaders,
                 data: ["POST", "PUT"].includes(method) ? this.apiBody : undefined,
             };
-
             const response = await this.request.fetch(url, { method, ...options });
             const actualStatus = response.status();
             responseJSON = await response.json().catch(() => ({}));
 
-            this.statusCodeValidator(actualStatus, expectedStatus, this._sendRequest);
+            this.logger.logResponse(
+                actualStatus,
+                response.url(),
+                response.headers(),
+                responseJSON,
+            );
 
+            this.statusCodeValidator(actualStatus, expectedStatus, this._sendRequest);
             this.cleanup();
         });
 
@@ -77,11 +91,11 @@ export class RequestHandler {
         return url.toString();
     }
 
-    statusCodeValidator(actual, expected, caller) {
-        if (actual !== expected) {
-            const error = new Error(
-                `Expected status ${expected}, got ${actual}`
-            );
+    statusCodeValidator(actualStatus, expectedStatus, caller) {
+        if (actualStatus !== expectedStatus) {
+            const logs = this.logger.getRecentLogs()
+            const error = new Error(`Recived status: ${actualStatus}, but expected: ${expectedStatus}.\n
+                Recent API Activity: \n${logs}\n`)
             Error.captureStackTrace(error, caller);
             throw error;
         }
