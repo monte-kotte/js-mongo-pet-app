@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
+import { test } from '../fixtures/test-setup.js';
 const { generateTestPet } = require("../utils/pet-gen.js");
-import { test } from '../fixtures/test-setup.js'
 
 test('CRUD pet test', async ({ apiClient }) => {
     const testPet = generateTestPet();
@@ -10,7 +10,7 @@ test('CRUD pet test', async ({ apiClient }) => {
         const createdPet = await apiClient
             .path("/api/pets")
             .body(testPet)
-            .postRequest(201)
+            .postRequest(201);
 
         expect(createdPet).toMatchObject(expect.objectContaining(testPet));
         petId = createdPet.petId;

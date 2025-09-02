@@ -1,6 +1,6 @@
-import { test as base } from '@playwright/test'
+import { test as base } from '@playwright/test';
+import { APILogger } from '../utils/logger';
 import { RequestHandler } from '../utils/request-handler';
-import { APILogger } from '../utils/logger'
 
 export const test = base.extend({
     apiClient: async ({ request, baseURL, extraHTTPHeaders }, use) => {
